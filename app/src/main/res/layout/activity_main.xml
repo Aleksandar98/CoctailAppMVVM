@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/back"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/pretragaEdit"
+        android:hint="Pretrazite Koktel"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></EditText>
+
+    <LinearLayout
+        android:weightSum="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Koktel1"
+            android:id="@+id/textPretraga1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Koktel1"
+            android:id="@+id/textPretraga2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Koktel1"
+            android:id="@+id/textPretraga3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/testTv"></TextView>
+
+    <Button
+        android:background="@color/colorAccent"
+        android:id="@+id/pretraziBtn"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Pretrazi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </Button>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textSize="25dp"
+            android:fontFamily="casual"
+            android:text="Probajte neki novi koktel?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+
+        <ImageView
+            android:id="@+id/refreshButton"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_launcher">
+
+        </ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/randomKoktelHolder"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/randomKoktelImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_launcher_background"/>
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/koktelIme"
+                android:textSize="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yellow Bird"/>
+
+            <TextView
+                android:id="@+id/koktelTip"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alcoholic"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
