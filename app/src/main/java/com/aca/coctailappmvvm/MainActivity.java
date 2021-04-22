@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        mainActivityViewModel.init();
+        mainActivityViewModel.init(this);
 
         mainActivityViewModel.getRandomCoctail().observe(this,coctail -> {
             Glide.with(this).load(coctail.getDrinkImg()).centerCrop()

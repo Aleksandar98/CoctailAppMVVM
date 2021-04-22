@@ -1,5 +1,7 @@
 package com.aca.coctailappmvvm.viewmodels;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -17,10 +19,10 @@ public class MainActivityViewModel extends ViewModel {
 
     private CoctailRepository coctailRepository;
 
-    public void init(){
+    public void init(Context context){
         if(mRandomCoctail!=null)
             return;
-        coctailRepository = CoctailRepository.getInstance();
+        coctailRepository = CoctailRepository.getInstance(context);
         mRandomCoctail = coctailRepository.getRandomCoctail();
         mRecentSearches = coctailRepository.getmRecentSearches();
     }

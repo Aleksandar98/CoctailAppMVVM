@@ -1,26 +1,65 @@
 package com.aca.coctailappmvvm.repositories;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.aca.coctailappmvvm.api.ApiClient;
 import com.aca.coctailappmvvm.models.Coctail;
+
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.FlowableSubscriber;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.subscribers.DisposableSubscriber;
+
 public class CoctailRepository {
 
     private static CoctailRepository instance;
+    private Context context;
 
-    public static CoctailRepository getInstance() {
+    public static CoctailRepository getInstance(Context context) {
         if(instance==null)
-            instance = new CoctailRepository();
+            instance = new CoctailRepository(context);
         return instance;
+    }
+
+    public CoctailRepository(Context context){
+        this.context = context;
     }
 
     public MutableLiveData<Coctail> getRandomCoctail(){
 
         //TODO Get Random coctail using RxJava2
+
+        ApiClient.getClient(context).getRandomCoctail()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSubscriber<Coctail>() {
+                    @Override
+                    public void onNext(Coctail coctail) {
+                        Log.d("myTag", "onNext: "+coctail.getDrinkName());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
 
         MutableLiveData<Coctail> mutableLiveData = new MutableLiveData();
         List<String> ingredients = new ArrayList<>();

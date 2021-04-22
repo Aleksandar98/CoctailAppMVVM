@@ -1,14 +1,33 @@
 package com.aca.coctailappmvvm.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Coctail {
 
+    @SerializedName("idDrink")
+    @Expose
     String idDrink;
+
+    @SerializedName("strDrink")
+    @Expose
     String drinkName;
+
+    @SerializedName("strInstructions")
+    @Expose
     String instructions;
+
+    @SerializedName("strDrinkThumb")
+    @Expose
     String drinkImg;
+
+    @SerializedName("strAlcoholic")
+    @Expose
     String drinkType;
+
+
     List<String> ingredients;
 
 
