@@ -1,12 +1,14 @@
 package com.aca.coctailappmvvm.models;
 
+import com.aca.coctailappmvvm.adapters.CoctailJSONadapter;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@JsonAdapter(CoctailJSONadapter.class)
 public class Coctail {
-
     @SerializedName("idDrink")
     @Expose
     String idDrink;
@@ -62,5 +64,17 @@ public class Coctail {
 
     public String getDrinkType() {
         return drinkType;
+    }
+
+    @Override
+    public String toString() {
+        return "Coctail{" +
+                "idDrink='" + idDrink + '\'' +
+                ", drinkName='" + drinkName + '\'' +
+                ", instructions='" + instructions + '\'' +
+                ", drinkImg='" + drinkImg + '\'' +
+                ", drinkType='" + drinkType + '\'' +
+                ", ingredients=" + ingredients +
+                '}';
     }
 }

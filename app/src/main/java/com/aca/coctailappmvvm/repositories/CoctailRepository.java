@@ -17,9 +17,14 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.FlowableSubscriber;
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subscribers.DisposableSubscriber;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CoctailRepository {
 
@@ -41,21 +46,14 @@ public class CoctailRepository {
         //TODO Get Random coctail using RxJava2
 
         ApiClient.getClient(context).getRandomCoctail()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<Coctail>() {
+                .enqueue(new Callback<Coctail>() {
                     @Override
-                    public void onNext(Coctail coctail) {
-                        Log.d("myTag", "onNext: "+coctail.getDrinkName());
+                    public void onResponse(Call<Coctail> call, Response<Coctail> response) {
+                        Log.d("myTag", "onResponse: "+response.body().toString());
                     }
 
                     @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    public void onFailure(Call<Coctail> call, Throwable t) {
 
                     }
                 });
