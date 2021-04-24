@@ -22,7 +22,7 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
 
-    public static CoctailAPI getClient(Context context) {
+    public static CoctailAPI getClient() {
 
 
 

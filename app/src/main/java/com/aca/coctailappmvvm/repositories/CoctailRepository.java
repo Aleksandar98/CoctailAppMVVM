@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.core.FlowableSubscriber;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subscribers.DisposableSubscriber;
 import retrofit2.Call;
@@ -29,44 +30,31 @@ import retrofit2.Response;
 public class CoctailRepository {
 
     private static CoctailRepository instance;
-    private Context context;
 
-    public static CoctailRepository getInstance(Context context) {
+
+    public static CoctailRepository getInstance() {
         if(instance==null)
-            instance = new CoctailRepository(context);
+            instance = new CoctailRepository();
         return instance;
     }
 
-    public CoctailRepository(Context context){
-        this.context = context;
-    }
 
     public MutableLiveData<Coctail> getRandomCoctail(){
 
         //TODO Get Random coctail using RxJava2
+        MutableLiveData<Coctail> mutableLiveData = new MutableLiveData();
 
-        ApiClient.getClient(context).getRandomCoctail()
-                .enqueue(new Callback<Coctail>() {
+        ApiClient.getClient().getRandomCoctail()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<Coctail>() {
                     @Override
-                    public void onResponse(Call<Coctail> call, Response<Coctail> response) {
-                        Log.d("myTag", "onResponse: "+response.body().toString());
-                    }
-
-                    @Override
-                    public void onFailure(Call<Coctail> call, Throwable t) {
-
+                    public void accept(Coctail coctail) throws Throwable {
+                        Log.d("myTag", "accept: "+coctail);
+                        mutableLiveData.postValue(coctail);
                     }
                 });
 
-
-        MutableLiveData<Coctail> mutableLiveData = new MutableLiveData();
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("Tequila");
-        ingredients.add("Triple sec");
-        ingredients.add("Lime juice");
-        ingredients.add("Salt");
-        mutableLiveData.postValue(new Coctail("11007","Margarita","\"Rub the rim of the glass with the lime slice to make the salt stick to it. Take care to moisten only the outer rim and sprinkle the salt on it. The salt should present to the lips of the imbiber and never mix into the cocktail. Shake the other ingredients with ice, then carefully pour into the glass."
-        ,"https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg","Alcoholic",ingredients));
         return mutableLiveData;
     }
 

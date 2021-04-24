@@ -51,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.init(this);
 
         mainActivityViewModel.getRandomCoctail().observe(this,coctail -> {
-            Glide.with(this).load(coctail.getDrinkImg()).centerCrop()
-                    .placeholder(getDrawable(R.drawable.ic_launcher_background)).into(randomKoktelImg);
-            randomKoktelIme.setText(coctail.getDrinkName());
-            rendomKoktelTip.setText(coctail.getDrinkType());
+            if(coctail!=null) {
+                Glide.with(this).load(coctail.getDrinkImg()).centerCrop()
+                        .placeholder(getDrawable(R.drawable.ic_launcher_background)).into(randomKoktelImg);
+                randomKoktelIme.setText(coctail.getDrinkName());
+                rendomKoktelTip.setText(coctail.getDrinkType());
+            }
         });
 
         mainActivityViewModel.getmRecentSearches().observe(this,searchList->{

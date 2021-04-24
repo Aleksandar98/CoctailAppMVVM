@@ -11,10 +11,10 @@ import retrofit2.http.Path;
 public interface CoctailAPI {
 
     @GET("random.php")
-    Call<Coctail> getRandomCoctail();
+    Flowable<Coctail> getRandomCoctail();
 
     @GET("/search.php?s={name}")
-    Call<Coctail> getCoctailByName(
+    Flowable<Coctail> getCoctailByName(
             @Path("name") String name
     );
 }

@@ -45,76 +45,40 @@ public class CoctailJSONadapter extends TypeAdapter<Coctail> {
         in.beginArray();
         in.beginObject();
 
-        String idDrink;
-        String strDrink;
-        String strAlcoholic;
-        String strInstructions;
-        String strDrinkThumb;
+        String idDrink ="";
+        String strDrink ="";
+        String strAlcoholic ="";
+        String strInstructions ="";
+        String strDrinkThumb ="";
         List<String> ingredients = new ArrayList();
         while(in.hasNext()){
 
             switch (in.nextName()){
                 case "idDrink" :idDrink=in.nextString();break;
+                case "strDrink" :strDrink=in.nextString();break;
+                case "strAlcoholic" :strAlcoholic=in.nextString();break;
+                case "strInstructions" :strInstructions=in.nextString();break;
+                case "strDrinkThumb" :strDrinkThumb=in.nextString();break;
+                case "strIngredient1" :{
+                    while(in.peek() != JsonToken.NULL){
+                        String ing = in.nextString();
+                        ingredients.add(ing);
+                        in.nextName();
+                    }
+                    in.skipValue();
+                };break;
 
-                
+                default: in.skipValue();
+
             }
-            in.skipValue();
+
 
         }
-        in.nextName();
-         = in.nextString();
-        in.nextName();
-         = in.nextString();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-         = in.nextString();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-         = in.nextString();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-        in.skipValue();
-        in.nextName();
-         = in.nextString();
-        //
-        in.nextName();
 
-            while(in.peek() != JsonToken.NULL){
-            String ing = in.nextString();
-            ingredients.add(ing);
-            in.nextName();
-       }
-        in.skipValue();
-        while (in.hasNext()) {
-            try {
-                in.nextName();
-                in.skipValue();
-            }catch (Exception e){
-                Log.d("myTag", "read: "+e.getMessage());
-            }
-        }
         in.endObject();
         in.endArray();
         in.endObject();
+
         return new Coctail(idDrink,strDrink,strInstructions,strDrinkThumb,strAlcoholic,ingredients);
     }
 }
