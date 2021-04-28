@@ -1,31 +1,20 @@
 package com.aca.coctailappmvvm.repositories;
 
-import android.content.Context;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.aca.coctailappmvvm.api.ApiClient;
 import com.aca.coctailappmvvm.models.Coctail;
-
-import org.reactivestreams.Subscription;
+import com.aca.coctailappmvvm.models.CoctailList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.FlowableSubscriber;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.subscribers.DisposableSubscriber;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CoctailRepository {
 
@@ -47,15 +36,18 @@ public class CoctailRepository {
         ApiClient.getClient().getRandomCoctail()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Coctail>() {
+                .subscribe(new Consumer<CoctailList>() {
                     @Override
-                    public void accept(Coctail coctail) throws Throwable {
-                        Log.d("myTag", "accept: "+coctail);
-                        mutableLiveData.postValue(coctail);
+                    public void accept(CoctailList coctail) throws Throwable {
+                        mutableLiveData.postValue(coctail.coctailList.get(0));
                     }
                 });
 
         return mutableLiveData;
+    }
+
+    public Flowable<CoctailList> refreshRandom(){
+        return ApiClient.getClient().getRandomCoctail();
     }
 
     public MutableLiveData<List<String>> getmRecentSearches() {
@@ -71,5 +63,27 @@ public class CoctailRepository {
 
         return mutableLiveData;
 
+    }
+
+    public MutableLiveData<List<Coctail>> searchCoctail(String search){
+
+        MutableLiveData<List<Coctail>> mutableLiveData = new MutableLiveData();
+
+        ApiClient.getClient().getCoctailByName(search)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<CoctailList>() {
+                    @Override
+                    public void accept(CoctailList coctails) throws Throwable {
+                         mutableLiveData.postValue(coctails.coctailList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("myTag", "accept: "+throwable.getMessage());
+                    }
+                });
+
+        return mutableLiveData;
     }
 }

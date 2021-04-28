@@ -1,14 +1,19 @@
 package com.aca.coctailappmvvm.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.aca.coctailappmvvm.adapters.CoctailJSONadapter;
+import com.aca.coctailappmvvm.adapters.CoctailListJSONadapter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-@JsonAdapter(CoctailJSONadapter.class)
-public class Coctail {
+@JsonAdapter(CoctailListJSONadapter.class)
+public class Coctail implements Parcelable {
     @SerializedName("idDrink")
     @Expose
     String idDrink;
@@ -77,4 +82,30 @@ public class Coctail {
                 ", ingredients=" + ingredients +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(idDrink);
+        parcel.writeString(drinkName);
+        parcel.writeString(instructions);
+        parcel.writeString(drinkImg);
+        parcel.writeString(drinkType);
+        parcel.writeList(ingredients);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Coctail createFromParcel(Parcel in) {
+            return new Coctail(in.readString(),in.readString(),in.readString(),in.readString(),in.readString(),in.readArrayList(ClassLoader.getSystemClassLoader()));
+        }
+
+        public Coctail[] newArray(int size) {
+            return new Coctail[size];
+        }
+    };
 }

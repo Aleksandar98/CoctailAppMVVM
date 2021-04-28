@@ -1,16 +1,26 @@
 package com.aca.coctailappmvvm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aca.coctailappmvvm.models.Coctail;
 import com.aca.coctailappmvvm.viewmodels.MainActivityViewModel;
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView randomKoktelImg;
     TextView randomKoktelIme;
     TextView rendomKoktelTip;
+
+    ProgressBar loadingProgress;
 
     private MainActivityViewModel mainActivityViewModel;
     @Override
@@ -46,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
         randomKoktelIme = findViewById(R.id.koktelIme);
         rendomKoktelTip = findViewById(R.id.koktelTip);
 
+        loadingProgress = findViewById(R.id.loadingProgress);
+
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        mainActivityViewModel.init(this);
+        mainActivityViewModel.init();
 
         mainActivityViewModel.getRandomCoctail().observe(this,coctail -> {
             if(coctail!=null) {
@@ -69,8 +83,32 @@ public class MainActivity extends AppCompatActivity {
             mainActivityViewModel.refreshCoctail();
         });
 
+
+
+        mainActivityViewModel.getIsLoading().observe(this,isLoading->{
+
+            if(isLoading){
+                loadingProgress.setVisibility(View.VISIBLE);
+            }else{
+                loadingProgress.setVisibility(View.GONE);
+
+            }
+        });
+
         pretraziBtn.setOnClickListener(view -> {
-            mainActivityViewModel.searchCoctail(pretragaEdit.getText().toString());
+            String searchValue = pretragaEdit.getText().toString();
+            mainActivityViewModel.searchCoctail(searchValue);
+
+            mainActivityViewModel.getSearchedCoctails().observe(this, new Observer<List<Coctail>>() {
+                @Override
+                public void onChanged(List<Coctail> coctails) {
+
+
+                    Intent intent = new Intent(MainActivity.this,SearchListActivity.class);
+                    intent.putParcelableArrayListExtra("coctailList", (ArrayList<? extends Parcelable>) coctails);
+                    startActivity(intent);
+                }
+            });
         });
     }
 }
